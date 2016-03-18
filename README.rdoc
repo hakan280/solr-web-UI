@@ -1,28 +1,16 @@
-== README
+Solr Web User Interface
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+It was build with Ruby on Rails.
 
-Things you may want to cover:
+To run application
 
-* Ruby version
+First you need run the following command in the rails application directory
 
-* System dependencies
+bundle install
 
-* Configuration
+To start rails web server
 
-* Database creation
+rails server
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Then go to url,
+0.0.0.0:3000
