@@ -1,8 +1,11 @@
-Solr Web User Interface
+Web User Interface to search on Solr server
 
-It was build with Ruby on Rails.
+It was built with Ruby on Rails.
+
 
 To run application
+
+You need a running Solr server and in the solr controller base url variable must be edited.
 
 First you need run the following command in the rails application directory
 
@@ -14,3 +17,4 @@ rails server
 
 Then go to url,
 0.0.0.0:3000
+
