@@ -1,0 +1,59 @@
+<div class="row " style="margin-bottom: 50px;margin-top: 50px">
+	<div class="col-md-12 text-center">
+		<%= form_tag("/ara", method: "get" , class:'inline-form') do %>
+		  <div class="form-group">	
+			  <%= text_field_tag :query_term , params[:query_term]%>
+			  <%= submit_tag "Ara" , class: 'btn btn-primary' %>
+		  </div>
+		<% end %>
+	</div>
+</div>
+
+<% if @results %>
+
+	<% total_result =  @results['response']['numFound']%>
+
+	<% docs = @results['response']['docs']%>
+
+	<p>Toplam bulunan sonuç sayısı --> <strong> <%=total_result%> </strong> </p>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<th>id</th>
+				<th>category</th>
+				<th>content</th>
+
+				<% docs.each do |doc| %>
+
+				<tr>
+					<td><%= doc['id']%></td>
+					<td> <%= doc['category'].pop %></td>
+					<td><%= doc['content'].force_encoding('utf-8')%></td>
+
+				</tr>
+
+				<% end %>
+			</table>
+
+		</div>
+	</div>
+
+	<div class="row">
+		<% page_number = total_result / 10 %>
+		<% page_number = page_number + 1 if (total_result % 10) > 0  %>
+		<div class="col-md-12 text-center">
+				
+			<nav>
+			  <ul class="pagination">
+			  	<%for i in 1..page_number%>
+				    <% start = (i-1) * 10%>
+			    	<li><%= link_to i , ara_path(query_term: params[:query_term], start: start) %></li>
+			    <% end%>
+	  </ul>
+	</nav>
+
+
+		</div>
+	</div>
+
+<% end %>
