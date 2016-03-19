@@ -1,8 +1,8 @@
 <div class="row " style="margin-bottom: 50px;margin-top: 50px">
 	<div class="col-md-12 text-center">
-		<%= form_tag("/ara", method: "get" , class:'inline-form') do %>
+		<%= form_tag("/ara", method: "get" , class:'form-inline') do %>
 		  <div class="form-group">	
-			  <%= text_field_tag :query_term , params[:query_term]%>
+			  <%= text_field_tag :query_term , params[:query_term] , class:"form-control" %>
 			  <%= submit_tag "Ara" , class: 'btn btn-primary' %>
 		  </div>
 		<% end %>
@@ -15,26 +15,37 @@
 
 	<% docs = @results['response']['docs']%>
 
-	<p>Toplam bulunan sonuç sayısı --> <strong> <%=total_result%> </strong> </p>
+	<div class="row">
+		<div class="col-md-3">
+			<ul class="list-group">
+		  		<li class="list-group-item active">
+		    		<span class="badge"> <%= total_result %></span>
+		    		Toplam sonuç sayısı:
+		  		</li>
+			</ul>
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table table-striped">
-				<th>id</th>
-				<th>category</th>
-				<th>content</th>
-
-				<% docs.each do |doc| %>
-
-				<tr>
-					<td><%= doc['id']%></td>
-					<td> <%= doc['category'].pop %></td>
-					<td><%= doc['content'].force_encoding('utf-8')%></td>
-
-				</tr>
-
+				<th>#</th>
+				<th>ID</th>
+				<th>Category</th>
+				<th>Content</th>
+				
+				<% docs.each_with_index do |doc , index| %>
+					<% id = doc['id'] %>
+					<% content = doc['content'].force_encoding('utf-8') %>
+					<% category = doc['category'].pop.titleize %>
+					<tr>
+						<td> <strong> <%= index + params[:start].to_i + 1 %> </strong> </td>
+						<td> <%= id%> </td>
+						<td> <%= category %> </td>
+						<td> <p class="lead"> <%= truncate(content, length: 350, separator: " " )%> </p> </td>
+					</tr>
 				<% end %>
+			
 			</table>
-
 		</div>
 	</div>
 
@@ -45,15 +56,16 @@
 				
 			<nav>
 			  <ul class="pagination">
-			  	<%for i in 1..page_number%>
-				    <% start = (i-1) * 10%>
-			    	<li><%= link_to i , ara_path(query_term: params[:query_term], start: start) %></li>
+			  	<%for i in 0...page_number%>
+				    <% start = i * 10%>
+				    <% if (i) == (params[:start].to_i) / 10%>
+			    		<li class="active"><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start) %></li>
+			    	<% else %>
+			    		<li><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start) %></li>
+			    	<% end %>
 			    <% end%>
-	  </ul>
-	</nav>
-
-
+	  		   </ul>
+	        </nav>
 		</div>
 	</div>
-
 <% end %>
