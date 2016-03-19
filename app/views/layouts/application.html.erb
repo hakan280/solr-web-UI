@@ -8,7 +8,25 @@
 </head>
 <body>
 <div class="container">
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<% if flash[:notice]%>
+				<p class="alert alert-success"><%= notice %></p>
+			<% end %>
+		</div>
+	</div>
+
 	<%= yield %>
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+
+				<% if flash[:alert]%>
+					<p class="alert alert-danger"><%= alert %></p>
+			<% end %>
+		</div>
+	</div>
 </div>
 
 

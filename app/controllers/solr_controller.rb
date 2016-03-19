@@ -12,9 +12,13 @@ class SolrController < ApplicationController
   private
   
   def solr_connect(query_term, start)
-  	h = Net::HTTP.new('localhost', 8983)
-	http_response = h.get("/solr/haberler/select?q=#{query_term}&start=#{start}&wt=ruby")
-	rsp = eval(http_response.body)	
-  end
+	begin
+		h = Net::HTTP.new('localhost', 8983)
+		http_response = h.get("/solr/haberler/select?q=#{query_term}&start=#{start}&wt=ruby")
+		rsp = eval(http_response.body)	
+	rescue Exception => e
+		redirect_to root_path, alert: "Please check your Solr server status !"	
+	end
+end
 
 end
