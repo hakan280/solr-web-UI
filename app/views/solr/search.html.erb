@@ -14,7 +14,8 @@
 	<% total_result =  @results['response']['numFound']%>
 
 	<% docs = @results['response']['docs']%>
-
+	<% facet_categories = @results['facet_counts']['facet_fields']['category']%>
+	
 	<div class="row">
 		<div class="col-md-3">
 			<ul class="list-group">
@@ -23,6 +24,18 @@
 		    		Toplam sonuç sayısı:
 		  		</li>
 			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<% (0..(facet_categories.size-1)).step(2) do |n| %>
+				<% category_name = facet_categories[n ] %>
+				<% number = facet_categories[n + 1 ]%>
+				<% if number > 0 %>
+					<a href= <%=ara_path(query_term: params[:query_term], start: params[:start] ,facet_category: category_name ) %> > 
+					<button class="btn btn-success" type="button"> <%=facet_categories[n]%>  <span class="badge"><%= facet_categories[n + 1 ] %></span></button> </a>
+				<% end %>
+			<% end %>
 		</div>
 	</div>
 	<div class="row">
@@ -59,9 +72,9 @@
 			  	<%for i in 0...page_number%>
 				    <% start = i * 10%>
 				    <% if (i) == (params[:start].to_i) / 10%>
-			    		<li class="active"><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start) %></li>
+			    		<li class="active"><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start, facet_category: params[:facet_category]) %></li>
 			    	<% else %>
-			    		<li><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start) %></li>
+			    		<li><%= link_to (i + 1) , ara_path(query_term: params[:query_term], start: start,facet_category: params[:facet_category]) %></li>
 			    	<% end %>
 			    <% end%>
 	  		   </ul>
